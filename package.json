@@ -1,0 +1,75 @@
+{
+  "name": "typescript-lib-starter",
+  "version": "0.0.1",
+  "description": "TypeScript library starter",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "imports": {
+    "~/*": "./src/*"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jakeklassen/typescript-lib-starter.git"
+  },
+  "scripts": {
+    "clean": "rimraf dist",
+    "lint": "eslint src --ext .js,.ts --config .eslintrc.cjs",
+    "format": "eslint src --ext .js,.ts --config .eslintrc.cjs --fix",
+    "prebuild": "npm run clean",
+    "build": "npm run lint && tsup src --format cjs,esm --dts-resolve --config tsconfig.build.json",
+    "dev": "nodemon --exec 'npm run build || exit 1'",
+    "test": "vitest",
+    "release": "pnpx bumpp --commit --tag && pnpm build && esno ./scripts/prepublish.ts && pnpm publish --access public --no-git-checks && esno ./scripts/postpublish.ts && git push",
+    "pretest:coverage": "npm run clean",
+    "test:coverage": "vitest run --coverage"
+  },
+  "author": "Jake Klassen <jklassendev@gmail.com>",
+  "license": "MIT",
+  "keywords": [
+    "typescript",
+    "lib",
+    "library",
+    "starter",
+    "template"
+  ],
+  "devDependencies": {
+    "@types/eslint": "^8.4.3",
+    "@types/node": "^18.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.30.0",
+    "@typescript-eslint/parser": "^5.30.0",
+    "bumpp": "^8.2.1",
+    "eslint": "^8.18.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "esno": "^0.16.3",
+    "nodemon": "^2.0.18",
+    "prettier": "^2.7.1",
+    "rimraf": "^3.0.0",
+    "ts-node": "^10.8.1",
+    "typescript": "^4.7.4",
+    "vite": "2.9.13",
+    "vitest": "^0.16.0"
+  },
+  "dependencies": {
+    "tsup": "^6.1.2",
+    "type-fest": "2.15.0"
+  }
+}
